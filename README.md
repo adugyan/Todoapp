@@ -9,4 +9,6 @@
 
 
 - version 1.0
-> 7/8/2020 Included an Ajax fetch method so that input from the user is immediately appended. Page refreshment is no longer needed
+> 7/8/2020 
+- Included an Ajax fetch method so that input from the user is immediately appended. Page refreshment is no longer needed
+- included error handling with try-except-handling pattern
