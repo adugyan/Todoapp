@@ -13,7 +13,7 @@
 - Included an Ajax fetch method so that input from the user is immediately appended. Page refreshment is no longer needed
 - included error handling with try-except-handling pattern
 >7/9/2020
--Included Flask-Migrate
+Included database migration with Flask-Migrate
   1. Set up folders to store migrations(as versions of the database)
   2. Ran initial migration to create tables and replace the use of db.create_all()
   3. Migrate on changes to our data models
