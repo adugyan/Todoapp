@@ -9,7 +9,7 @@
 
 
 - version 1.0
-> 7/8/2020 
+> 7/8/2020
 - Included an Ajax fetch method so that input from the user is immediately appended. Page refreshment is no longer needed
 - included error handling with try-except-handling pattern
 >7/9/2020
@@ -21,3 +21,6 @@ Included database migration with Flask-Migrate
     - Allow Flask-Migrate to auto-generate a migration script based on the changes
     - Fine-tune the migration scripts
     - Run the migration, aka “upgrade” the database schema by a “version”
+>7/10/2020 Included update functionality
+1. Added checkboxes to the view when new items are added to the list
+2. When a user clicks a checkbox it will send out an update request 
