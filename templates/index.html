@@ -9,8 +9,20 @@
         list-style: none;
         padding: 0;
         margin: 0;
-        width: 300px;
+        width: 200px;
       }
+    li {
+      clear: both;
+    }
+    li button {
+      -webkit-appearance: none;
+      border: none;
+      outline: none;
+      color: red;
+      float: right;
+      cursor: pointer;
+      font-size: 20px;
+    }
   </style>
  </head>
 
@@ -23,63 +35,85 @@
    <div id="error" class="hidden"> Something went wrong!</div>
    <ul id="todos">
      {% for d in data %}
-     <li><input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %} />
-          {{ d.description }}
+     <li>
+       <input class="check-completed" data-id="{{ d.id }}" type="checkbox" {% if d.completed %} checked {% endif %}/> {{ d.description }}
+       <button class="delete-button" data-id="{{ d.id }}"/>&cross;</button>
       </li>
      {% endfor %}
    </ul>
    <script>
-   const checkboxes = document.querySelectorAll('.check-completed');
-      for (let i = 0; i < checkboxes.length; i++) {
-        const checkbox = checkboxes[i];
-        checkbox.onchange = function(e) {
-          const newCompleted = e.target.checked;
-          const todoId = e.target.dataset['id'];
-          fetch('/todos/' + todoId + '/set-completed', {
-            method: 'POST',
-            body: JSON.stringify({
-              'completed': newCompleted
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(function() {
-            document.getElementById('error').className = 'hidden';
-          })
-          .catch(function() {
-            document.getElementById('error').className = '';
-          })
+    // Get the UL list by ID "todos"
+    const checkboxes = document.getElementById('todos');
+    // add an event listener click to get the checkbox
+    checkboxes.addEventListener('click', function (e) {
+        if (e.target && e.target.nodeName == "INPUT") {
+            console.log("INPUT ", e, " was clicked!");
+            const newCompleted = e.target.checked;
+            const todoID = e.target.dataset['id'];
+            fetch('/todos/' + todoID + '/set-completed', {
+                method: 'POST',
+                body: JSON.stringify({'completed': newCompleted}),
+                headers: {'Content-Type': 'application/json'}
+            }).then(function (response) {
+                document.getElementById('error').className = 'hidden';
+            }).catch(function () {
+                document.getElementById('error').className = '';
+            })
         }
-      }
+    })
 
-    document.getElementById('form').onsubmit = function(e) {
-      e.preventDefault();
-      //method and action handled by fetch instead of being form attributes
-      fetch('/todos/create', {
-        method: 'POST',
-        body: JSON.stringify({
-          'description': document.getElementById('description').value
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+
+      // Get the UL list by ID "todos"
+      const deleteBtns = document.getElementById('todos');
+      // add an event listener click to get the delete button
+      deleteBtns.addEventListener('click', function (e) {
+          if (e.target && e.target.nodeName == "BUTTON") {
+              console.log("Button ", e, " was clicked!");
+              const todoId = e.target.dataset['id'];
+              fetch('/todos/' + todoId + '/delete', {
+                  method: 'DELETE',
+              }).then(function (response) {
+                  e.target.parentNode.remove();
+              })
+          }
+      });
+
+      // New todo item form
+      const todoform = document.getElementById('Todoform');
+      todoform.addEventListener('submit', function (e) {
+          e.preventDefault();
+          fetch('/todos/create', {
+              method: 'POST',
+              body: JSON.stringify({
+                  'description': document.getElementById('description').value,
+                  'list_id': document.getElementById('list_id').value
+              }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          }).then(function (response) {
+              return response.json();
+          }).then(function (jsonResponse) {
+              // My nodes example: (I use the bootstrap CSS)
+              const checkbox = document.createElement("INPUT");
+              checkbox.setAttribute("type", "checkbox");
+              checkbox.setAttribute('data-id', jsonResponse['id']);
+              checkbox.setAttribute('class', 'check-completed form-check-input');
+              const deleteButton = document.createElement('BUTTON');
+              deleteButton.innerHTML = '&#10005;';
+              deleteButton.setAttribute('class', "list-delete-button");
+              deleteButton.setAttribute('data-id', jsonResponse['id']);
+              const liItem = document.createElement('LI');
+              liItem.setAttribute('class', 'list-group-item');
+              liItem.append(checkbox);
+              liItem.append(jsonResponse['description']);
+              liItem.append(deleteButton);
+              document.getElementById('todos').appendChild(liItem);
+              document.getElementById('error').className = 'hidden';
+          }).catch(function () {
+              document.getElementById('error').className = '';
+          })
       })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(jsonResponse) {
-        console.log(jsonResponse);
-        //to append from the ul element "todos"
-        const liItem = document.createElement('LI');
-        liItem.innerHTML = jsonResponse['description'];
-        document.getElementById('todos').appendChild(liItem);
-        document.getElementById('error').className = 'hidden';
-      })
-      .catch(function() {
-        document.getElementById('error').className = '';
-      })
-    }
    </script>
  </body>
 </html>

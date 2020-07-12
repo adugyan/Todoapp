@@ -23,4 +23,7 @@ Included database migration with Flask-Migrate
     - Run the migration, aka “upgrade” the database schema by a “version”
 >7/10/2020 Included update functionality
 1. Added checkboxes to the view when new items are added to the list
-2. When a user clicks a checkbox it will send out an update request 
+2. When a user clicks a checkbox it will send out an update request
+>7/11/2020
+1. Added delete functionality
+2. Added dynamic capability to check and delete boxes
