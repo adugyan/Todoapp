@@ -21,72 +21,60 @@ class Todo(db.Model):
 #db.create_all()
 
 #the route that listens to the form action /todos/create from index.html
-@app.route('/todos/create', methods=['POST'])
 def create_todo():
     error = False
     body = {}
     try:
         description = request.get_json()['description']
-        list_id = request.get_json()['list_id']
-        todo = Todo(description=description, completed=False, list_id=list_id)
+        #create a todo item from the description value in index
+        todo = Todo(description=description)
         db.session.add(todo)
         db.session.commit()
-        body['id'] = todo.id
-        body['completed'] = todo.completed
         body['description'] = todo.description
-    except ValueError as e:
-        print(e)
+    except:
         error = True
         db.session.rollback()
         print(sys.exc_info())
     finally:
         db.session.close()
     if error:
-        abort(500)
+        abort(400)
     else:
         return jsonify(body)
 
+#DELETE
+@app.route('/todos/<todo_id>', methods=['DELETE'])
+def delete_todo(todo_id):
+  try:
+    Todo.query.filter_by(id=todo_id).delete()
+    db.session.commit()
+  except:
+    db.session.rollback()
+  finally:
+    db.session.close()
+  return jsonify({ 'success': True })
+
+
 #route handler to set items checked by the user as "completed"
-@app.route('/todos/<int:todo_id>/set-completed', methods=['POST'])
+@app.route('/todos/<todo_id>/set-completed', methods=['POST'])
 def set_completed_todo(todo_id):
-    error = False
     try:
         completed = request.get_json()['completed']
         print('completed', completed)
         todo = Todo.query.get(todo_id)
         todo.completed = completed
         db.session.commit()
-    except ValueError as e:
+    except:
         db.session.rollback()
-        error = True
-        print(sys.exc_info())
     finally:
         db.session.close()
-    if error:
-        abort(500)
-    else:
-        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
-#route handler for deletion
-@app.route('/todos/<int:todo_id>/delete', methods=['DELETE'])
-def delete_todo(todo_id):
-    print(todo_id)
-    error = False
-    try:
-        todo = Todo.query.get(todo_id)
-        print(todo)
-        db.session.delete(todo)
-        db.session.commit()
-    except ValueError as e:
-        db.session.rollback()
-        error = True
-        print(sys.exc_info())
-    finally:
-        db.session.close()
-    if error:
-        abort(500)
-    else:
-        return jsonify({'success': True})
+@app.route('/')
+def index():
+    return render_template('index.html', data=Todo.query.order_by('id').all()
+    )
+
 
 #allows it to run with python <filename>
 if __name__ == '__main__':
