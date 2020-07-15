@@ -26,3 +26,9 @@ Included database migration with Flask-Migrate
 2. When a user clicks a checkbox it will send out an update request
 >7/11/2020
 1. Added delete functionality
+>7/14/2020
+1. Added a new parent table 'todolists'  as well as a foreign key relationship
+2. Added new migration files for the added database schema
+3. Added a second list named urgent and the option for the user to switch between preferred lists
+to organize items
+4. Changed page layout
