@@ -3,9 +3,48 @@
 <!-- [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com) -->
 
 
-# Todoapp
+Todoapp
+---
 
-> Basic MVC flow. From the view the user can insert input, and submit to a post route (/todo/create). That goes to the post request listener on the controller side. The controller will then manipulate our model, and grab the latest model from our database to become the new view.
+### Introduction
+
+A Todo application that will allow users to submit items to a list. There are various lists, for organizational purposes, and once an item is created it can be checked to denote it has been completed and each item will also come with a delete button to clear the list.
+
+### Overview
+
+This app is functional but will still be added to. I plan to have a form to create custom lists as well as including CSS to improve the look of the project.
+
+### Tech Stack
+
+The tech stack I used included:
+
+* **SQLAlchemy ORM** as the ORM library of choice
+* **PostgreSQL** as the database of choice
+* **Python3** and **Flask** as my server language and server framework
+* **Flask-Migrate** for creating and running schema migrations
+* **HTML** for the website's frontend
+
+### Main Files: Project Structure
+
+  ```sh
+  ├── README.md
+  ├── app.py *** the main driver of the app. Includes SQLAlchemy models.
+                    "python app.py" to run after installing dependences
+  ├── error.log
+  ├── requirements.txt *** The dependencies we need to install with "pip3 install -r requirements.txt"
+  ├── migrations
+  │   ├── 3e805f616c55_.py
+  │   ├── 08979bcf4318_.py
+  │   ├── da2f29fca445_.py
+  │   └── f94e60ef5d2d_.py
+  └── templates
+      ├── index.html
+  ```
+
+  Overall:
+  * Models are located in `app.py`.
+  * Controllers are also located in `app.py`.
+  * The web frontend is located in `templates/`.
 
 
 - version 1.0
