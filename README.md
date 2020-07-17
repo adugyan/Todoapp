@@ -57,13 +57,14 @@ The tech stack I used included:
     
 
   2. Run the development server:
-    ```
+    
+    
     $ export FLASK_APP=myapp
     
     $ export FLASK_ENV=development # enables debug mode
     
     $ python3 app.py
-    ```
+    
 
   3. Navigate to Home page [http://localhost:5000](http://localhost:5000)
 
