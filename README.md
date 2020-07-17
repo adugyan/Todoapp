@@ -47,6 +47,28 @@ The tech stack I used included:
   * The web frontend is located in `templates/`.
 
 
+  Instructions
+  -----
+  1. First, [install Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask) if you haven't already.
+
+    ```
+    $ cd ~
+    $ sudo pip3 install Flask
+    ```
+
+  2. Run the development server:
+    ```
+    $ export FLASK_APP=myapp
+    $ export FLASK_ENV=development # enables debug mode
+    $ python3 app.py
+    ```
+
+  3. Navigate to Home page [http://localhost:5000](http://localhost:5000)
+
+
+
+
+
 - version 1.0
 > 7/8/2020
 - Included an Ajax fetch method so that input from the user is immediately appended. Page refreshment is no longer needed
